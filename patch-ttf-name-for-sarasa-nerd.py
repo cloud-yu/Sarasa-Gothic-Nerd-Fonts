@@ -12,11 +12,11 @@ from fontTools.ttLib.tables._n_a_m_e import _WINDOWS_LANGUAGE_CODES
 
 styleNames = {
     "fixed": "Fixed",
-    "fixed-slab": "Fixed Slab",
+    "fixedslab": "FixedSlab",
     "mono": "Mono",
-    "mono-slab": "Mono Slab",
+    "monoslab": "MonoSlab",
     "term": "Term",
-    "term-slab": "Term Slab",
+    "termslab": "TermSlab",
     "gothic": "Gothic",
     "ui": "UI",
 }
@@ -26,13 +26,13 @@ variantNames = {
     "regular": "Regular",
     "italic": "Italic",
     "bold": "Bold",
-    "bolditalic": "Bold Italic",
+    "bolditalic": "BoldItalic",
     "semibold": "SemiBold",
-    "semibolditalic": "SemiBold Italic",
+    "semibolditalic": "SemiBoldItalic",
     "light": "Light",
-    "lightitalic": "Light Italic",
+    "lightitalic": "LightItalic",
     "extralight": "ExtraLight",
-    "extralightitalic": "ExtraLight Italic",
+    "extralightitalic": "ExtraLightItalic",
 }
 
 
@@ -101,15 +101,15 @@ def getNonEnglishFontName(orthography):
 def patchForEnglish(
     fontName, style, orthography, variant, version, sarasaNerdFontsVersion
 ):
-    familyName = f"Sarasa {styleNames.get(style)} {orthography.upper()} Nerd Font"
-    styleName = getStyleName(variant)
+    familyName = f"Sarasa{styleNames.get(style.lower())}{orthography.upper()} NerdFont"
+    styleName = getStyleName(variant.lower())
     typographicFamily = familyName
-    typographicSubfamily = variantNames.get(variant)
+    typographicSubfamily = variantNames.get(variant.lower())
     uniqueFontIdentifier = (
-        f"{typographicFamily} {typographicSubfamily} {sarasaNerdFontsVersion}"
+        f"{typographicFamily}{typographicSubfamily} {sarasaNerdFontsVersion}"
     )
-    fullName = f"{typographicFamily} {typographicSubfamily}".replace(" Regular", "")
-    psName = f"{typographicFamily} {typographicSubfamily}".replace(" ", "-")
+    fullName = f"{typographicFamily}{typographicSubfamily}".replace("Regular", "")
+    psName = f"{typographicFamily}{typographicSubfamily}".replace(" ", "")
 
     # variants: [ 'regular', 'italic', 'bold', 'bolditalic', 'semibold', 'semibolditalic', 'light', 'lightitalic', 'extralight', 'extralightitalic' ]
     match variant:
@@ -152,29 +152,30 @@ def patchForEnglish(
 
 
 def patchForNonEnglish(fontName, style, orthography, variant, sarasaNerdFontsVersion):
-    familyName = f"{orthography.upper()} Nerd Font"
-    styleName = getStyleName(variant)
+    familyName = f"{orthography.upper()} NerdFont"
+    styleName = getStyleName(variant.lower())
 
-    if style == "mono":
-        familyName = f"{getNonEnglishMonospaceFontName(orthography)} {familyName}"
-    elif style == "mono-slab":
-        familyName = f"{getNonEnglishMonospaceFontName(orthography)} Slab {familyName}"
-    elif style == "gothic":
-        familyName = f"{getNonEnglishFontName(orthography)} {familyName}"
-    elif style == "ui":
-        familyName = f"{getNonEnglishFontName(orthography)} UI {familyName}"
-    else:
-        familyName = f"Sarasa {styleNames.get(style)} {familyName}"
+    match style.lower():
+        case "mono":
+            familyName = f"{getNonEnglishMonospaceFontName(orthography.lower())}{familyName}"
+        case "monoslab":
+            familyName = f"{getNonEnglishMonospaceFontName(orthography)}Slab{familyName}"
+        case "gothic":
+            familyName = f"{getNonEnglishFontName(orthography)}{familyName}"
+        case "ui":
+            familyName = f"{getNonEnglishFontName(orthography)}UI{familyName}"
+        case _:
+            familyName = f"Sarasa{styleNames.get(style.lower())}{familyName}"
 
     typographicFamily = familyName
-    typographicSubfamily = variantNames.get(variant)
+    typographicSubfamily = variantNames.get(variant.lower())
     uniqueFontIdentifier = (
         f"{typographicFamily} {typographicSubfamily} {sarasaNerdFontsVersion}"
     )
-    fullName = f"{typographicFamily} {typographicSubfamily}".replace(" Regular", "")
+    fullName = f"{typographicFamily}{typographicSubfamily}".replace("Regular", "")
 
     # variants: [ 'regular', 'italic', 'bold', 'bolditalic', 'semibold', 'semibolditalic', 'light', 'lightitalic', 'extralight', 'extralightitalic' ]
-    match variant:
+    match variant.lower():
         case "semibold" | "semibolditalic":
             familyName += " SemiBold"
         case "light" | "lightitalic":
@@ -210,17 +211,17 @@ def main():
 
     originalVersion = fontName.getName(_nameIDs.get("version"), 3, 1, getLangID("en"))
     originalVersionString = originalVersion.toUnicode()
-    matched = re.search(r"ttfautohint \((v\d+\.\d+\.\d+)\)", originalVersionString)
-    ttfAutoHintVersion = matched.group(1)
+    # matched = re.search(r"ttfautohint \((v\d+\.\d+\.\d+)\)", originalVersionString)
+    # ttfAutoHintVersion = matched.group(1)
 
-    patchedVersion = f"Version {sarasaNerdFontsVersion}; ttfautohint ({ttfAutoHintVersion}); Nerd Fonts {nerdFontsVersion}"
+    # patchedVersion = f"Version {sarasaNerdFontsVersion}; ttfautohint ({ttfAutoHintVersion}); Nerd Fonts {nerdFontsVersion}"
 
     patchForEnglish(
-        fontName, style, orthography, variant, patchedVersion, sarasaNerdFontsVersion
+        fontName, style, orthography, variant, originalVersionString, sarasaNerdFontsVersion
     )
 
     # skip for patching korean font, because upstream's sarasa gothic does not have the Korean font name in the release font files
-    if orthography != "k":
+    if orthography != "K":
         patchForNonEnglish(
             fontName,
             style,
