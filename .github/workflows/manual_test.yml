@@ -132,7 +132,7 @@ jobs:
       - run: ls -l
       - run: mkdir -p "${PWD}/outputs"
       - name: patch font
-        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --fontawesome --fontawesomeext --fontlogos --material --octicons --powersymbols --powerline --powerlineextra --no-progressbars --quiet --removeligatures "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
+        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --fontawesome --fontawesomeext --material --octicons --powersymbols --powerline --powerlineextra --no-progressbars --quiet --removeligatures "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
       - run: ls -l
       - run: ls -l "${PWD}/outputs"
       - name: rename patched font files
@@ -231,7 +231,7 @@ jobs:
       - run: ls -l
       - run: mkdir -p "${PWD}/outputs"
       - name: patch font
-        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --fontawesome --fontawesomeext --fontlogos --material --octicons --powersymbols --powerline --powerlineextra --no-progressbars --quiet --removeligatures "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
+        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --fontawesome --fontawesomeext --material --octicons --powersymbols --powerline --powerlineextra --no-progressbars --quiet --removeligatures "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
       - run: ls -l
       - run: ls -l "${PWD}/outputs"
       - name: rename patched font files
