@@ -1,10 +1,10 @@
 name: generate fonts custom
 
 on:
-#   workflow_dispatch
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_dispatch
+  # push:
+  #  tags:
+  #    - 'v*.*.*'
 
 concurrency: generate-fonts
 
