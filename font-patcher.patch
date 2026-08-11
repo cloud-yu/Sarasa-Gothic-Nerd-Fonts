@@ -1,8 +1,8 @@
-1141c1141,1153
-<             {'Enabled': self.args.material,             'Name': "Material",                'Filename': "materialdesign/MaterialDesignIconsDesktop.ttf",  'Exact': True,  'SymStart': 0xF0001,'SymEnd': 0xF1AF0,'SrcStart': None,   'ScaleRules': MDI_SCALE_LIST,   'Attributes': SYM_ATTR_DEFAULT},
+1236c1236,1248
+<             {'Enabled': self.args.material,             'Name': "Material",             'Filename': "materialdesign/MaterialDesignIconsDesktop.ttf",  'Exact': True,  'SymStart': 0xF0001,'SymEnd': 0xF1AF0,'SrcStart': None,   'ScaleRules': MDI_SCALE_LIST,   'Attributes': SYM_ATTR_DEFAULT},
 ---
->             # For Sarasa, cherry-pick some material icons, avoid 65535 glyphs limits
->             # {'Enabled': self.args.material,             'Name': "Material",                'Filename': "materialdesign/MaterialDesignIconsDesktop.ttf",  'Exact': True,  'SymStart': 0xF0001,'SymEnd': 0xF1AF0,'SrcStart': None,   'ScaleRules': MDI_SCALE_LIST,   'Attributes': SYM_ATTR_DEFAULT},
+> # For Sarasa, cherry-pick some material icons, avoid 65535 glyphs limits
+> #            {'Enabled': self.args.material,             'Name': "Material",             'Filename': "materialdesign/MaterialDesignIconsDesktop.ttf",  'Exact': True,  'SymStart': 0xF0001,'SymEnd': 0xF1AF0,'SrcStart': None,   'ScaleRules': MDI_SCALE_LIST,   'Attributes': SYM_ATTR_DEFAULT},
 >             {'Enabled': self.args.material,             'Name': "Material",                 'Filename': "materialdesign/MaterialDesignIconsDesktop.ttf",    'Exact': True,  'SymStart': 0xF0001, 'SymEnd': 0xF0553, 'SrcStart': None, 'ScaleRules': MDI_SCALE_LIST,     'Attributes': SYM_ATTR_DEFAULT},
 >             {'Enabled': self.args.material,             'Name': "Material",                 'Filename': "materialdesign/MaterialDesignIconsDesktop.ttf",    'Exact': True,  'SymStart': 0xF0565, 'SymEnd': 0xF0E32, 'SrcStart': None, 'ScaleRules': MDI_SCALE_LIST,     'Attributes': SYM_ATTR_DEFAULT},
 >             {'Enabled': self.args.material,             'Name': "Material",                 'Filename': "materialdesign/MaterialDesignIconsDesktop.ttf",    'Exact': True,  'SymStart': 0xF0F1B, 'SymEnd': 0xF0F2F, 'SrcStart': None, 'ScaleRules': MDI_SCALE_LIST,     'Attributes': SYM_ATTR_DEFAULT},
