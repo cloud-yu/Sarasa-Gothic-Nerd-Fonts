@@ -41,10 +41,10 @@ jobs:
           repository: "be5invis/Sarasa-Gothic"
           tag: ${{ env.LATEST_TAG }}
           fileName: "Sarasa-TTF-*-${{ env.LATEST_VERSION }}.7z"
-      - run: ls -l
+      # - run: ls -l
 
       - name: Upload Unhinted
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Sarasa-TTF-Unhinted.7z
           path: "Sarasa-TTF-Unhinted-${{ env.LATEST_VERSION }}.7z"
@@ -55,10 +55,10 @@ jobs:
           repository: "be5invis/Sarasa-Gothic"
           tag: ${{ env.LATEST_TAG }}
           fileName: "Sarasa-TTF-${{ env.LATEST_VERSION }}.7z"
-      - run: ls -l
+      # - run: ls -l
 
       - name: Upload Hinted
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Sarasa-TTF.7z
           path: "Sarasa-TTF-${{ env.LATEST_VERSION }}.7z"
@@ -88,13 +88,13 @@ jobs:
       FILENAME: "Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.variants }}"
     #   NERD_FONTS_VERSION: v3.0.2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # credits: https://github.com/adam7/delugia-code/blob/411f2aecdef35d6bb92776d26bb5efe4ee799e0a/.github/workflows/ci.yaml#L77-L100
       - name: Fetch FontForge
         run: |
           sudo apt install software-properties-common python3-fontforge fuse -y -q
-          curl -L "https://github.com/fontforge/fontforge/releases/download/20230101/FontForge-2023-01-01-a1dad3e-x86_64.AppImage" --output fontforge
+          curl -L "https://github.com/fontforge/fontforge/releases/download/20251009/FontForge-2025-10-09-Linux-x86_64.AppImage" --output fontforge
           chmod u+x fontforge
           echo Try appimage
           ./fontforge --version
@@ -112,33 +112,32 @@ jobs:
       - name: Open Font Patcher release
         run: |
           unzip FontPatcher.zip
-          ls -l
           patch font-patcher font-patcher.patch
 
       - run: tree .
       - name: Download sarasa-gothic-ttf.7z
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Sarasa-TTF-Unhinted.7z
-      - run: ls -l
+      # - run: ls -l
       - run: 7z x *.7z
-      - run: ls -l
-      - uses: actions/setup-python@v5
+      # - run: ls -l
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
       - name: install configparser
         run: pip install configparser
-      - run: ls -l
+      # - run: ls -l
       - run: mkdir -p "${PWD}/outputs"
       - name: patch font
-        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --quiet --complete --removeligatures "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
-      - run: ls -l
-      - run: ls -l "${PWD}/outputs"
+        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --quiet --complete --removeligatures --experimental center-wide "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
+      # - run: ls -l
+      # - run: ls -l "${PWD}/outputs"
       - name: rename patched font files
         run: |
           cd "${PWD}/outputs"
           mv *.ttf "../${FILENAME}-NerdFont.ttf"
-      - run: ls -l
+      # - run: ls -l
       - name: install fonttools
         run: pip install fonttools
       - name: correcting xAvgCharWidth to fix alignment issue
@@ -159,7 +158,7 @@ jobs:
       - name: patch TTF font family name
         run: python patch-ttf-name-for-sarasa-nerd.py "${FILENAME}-NerdFont.ttf" ${{ matrix.styles }} ${{ matrix.orthographies }} ${{ matrix.variants }} ${{ steps.get-fontpatcher.outputs.tag_name }} ${{ github.ref_name }}
       - name: upload patched font
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: patched Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.variants }}-Unhinted font
           path: Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.variants }}-NerdFont.ttf
@@ -189,7 +188,7 @@ jobs:
       FILENAME: "Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.variants }}"
     #   NERD_FONTS_VERSION: v3.0.2
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # credits: https://github.com/adam7/delugia-code/blob/411f2aecdef35d6bb92776d26bb5efe4ee799e0a/.github/workflows/ci.yaml#L77-L100
       - name: Fetch FontForge
@@ -216,28 +215,28 @@ jobs:
           patch font-patcher font-patcher.patch
 
       - name: Download sarasa-gothic-ttf.7z
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Sarasa-TTF.7z
-      - run: ls -l
+      # - run: ls -l
       - run: 7z x *.7z
-      - run: ls -l
-      - uses: actions/setup-python@v5
+      # - run: ls -l
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
       - name: install configparser
         run: pip install configparser
-      - run: ls -l
+      # - run: ls -l
       - run: mkdir -p "${PWD}/outputs"
       - name: patch font
-        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --complete --no-progressbars --quiet --removeligatures "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
-      - run: ls -l
-      - run: ls -l "${PWD}/outputs"
+        run: fontforge -script "${PWD}/font-patcher" --adjust-line-height --careful --complete --no-progressbars --quiet --removeligatures --experimental center-wide "${PWD}/${FILENAME}.ttf" --outputdir "${PWD}/outputs"
+      # - run: ls -l
+      # - run: ls -l "${PWD}/outputs"
       - name: rename patched font files
         run: |
           cd "${PWD}/outputs"
           mv *.ttf "../${FILENAME}-NerdFont.ttf"
-      - run: ls -l
+      # - run: ls -l
       - name: install fonttools
         run: pip install fonttools
       - name: correcting xAvgCharWidth to fix alignment issue
@@ -258,7 +257,7 @@ jobs:
       - name: patch TTF font family name
         run: python patch-ttf-name-for-sarasa-nerd.py "${FILENAME}-NerdFont.ttf" ${{ matrix.styles }} ${{ matrix.orthographies }} ${{ matrix.variants }} ${{ steps.get-fontpatcher.outputs.tag_name }} ${{ github.ref_name }}
       - name: upload patched font
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: patched Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.variants }}-Hinted font
           path: Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.variants }}-NerdFont.ttf
@@ -272,24 +271,23 @@ jobs:
         orthographies: ["SC"]
         hints: ["Hinted", "Unhinted"]
     steps:
-      - run: ls -l
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           pattern: patched Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-*-${{ matrix.hints }} font
           merge-multiple: true
       - name: generating ttc from ttf
-        run: python otf2otc.py -o Sarasa${{ matrix.styles }}${{ matrix.orthographies }}NerdFont-${{ matrix.hints}}.ttc Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-*-NerdFont.ttf
+        run: python otf2otc.py -o Sarasa${{ matrix.styles }}${{ matrix.orthographies }}NerdFont-${{ matrix.hints }}.ttc Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-*-NerdFont.ttf
 
-      - run: ls -l
+      # - run: ls -l
       - name: compress patched font files
         run: |
           7z a Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.hints }}-NerdFont.7z Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-*-NerdFont.ttf
           7z a Sarasa${{ matrix.styles }}${{ matrix.orthographies }}NerdFont-${{ matrix.hints }}.ttc.7z Sarasa${{ matrix.styles }}${{ matrix.orthographies }}NerdFont-${{ matrix.hints }}.ttc
 
-      - run: ls -l
+      # - run: ls -l
       - name: upload compressed font files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Sarasa${{ matrix.styles }}${{ matrix.orthographies }}-${{ matrix.hints }}-NerdFont.7z
           path: Sarasa${{ matrix.styles }}${{ matrix.orthographies }}*.7z
@@ -299,7 +297,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: Sarasa*-NerdFont.7z
           merge-multiple: true
